@@ -2,458 +2,259 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>AllFile Slimmer – Compresseur universel</title>
+  <title>Chiffreur / Déchiffreur de fichiers</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
-  <script src="https://unpkg.com/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-
   <style>
-    /* ————————————————————————————————————————————————
-       DESIGN PREMIUM FULLSCREEN GLASSMORPHISM
-       ———————————————————————————————————————————————— */
-    :root {
-      --bg1: #050816;
-      --bg2: #0f172a;
-      --accent: #38bdf8;
-      --accent-soft: rgba(56, 189, 248, 0.25);
-      --danger: #f97373;
-      --success: #4ade80;
-      --text-main: #e5e7eb;
-      --text-soft: #9ca3af;
-      --glass-bg: rgba(15, 23, 42, 0.75);
-      --glass-border: rgba(148, 163, 184, 0.35);
-      --radius-xl: 24px;
-      --radius-lg: 16px;
-      --shadow-soft: 0 24px 80px rgba(15, 23, 42, 0.9);
-      --transition-fast: 0.18s ease-out;
-      --transition-med: 0.28s ease-out;
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    html, body {
-      height: 100%;
-      width: 100%;
-      font-family: "Inter", sans-serif;
-      background: radial-gradient(circle at top left, #1d4ed8 0, transparent 45%),
-                  radial-gradient(circle at bottom right, #22c55e 0, transparent 45%),
-                  radial-gradient(circle at top right, #ec4899 0, transparent 40%),
-                  linear-gradient(135deg, var(--bg1), var(--bg2));
-      color: var(--text-main);
-      overflow: hidden;
-    }
-
     body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
       display: flex;
-      align-items: center;
       justify-content: center;
-      padding: 24px;
+      padding: 20px;
     }
-
-    .app-shell {
-      position: relative;
+    .app {
       width: 100%;
-      max-width: 1100px;
-      height: min(680px, 100%);
-      border-radius: 32px;
-      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), transparent 55%),
-                  radial-gradient(circle at bottom right, rgba(34, 197, 94, 0.12), transparent 55%),
-                  rgba(15, 23, 42, 0.88);
-      border: 1px solid rgba(148, 163, 184, 0.35);
-      box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(26px);
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-      overflow: hidden;
+      max-width: 700px;
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.4);
     }
-
-    @media (max-width: 900px) {
-      .app-shell {
-        grid-template-columns: 1fr;
-        height: auto;
-        max-height: 100%;
-      }
-    }
-
-    /* LEFT PANEL */
-    .left-pane, .right-pane {
-      padding: 28px;
+    h1 { text-align: center; margin-bottom: 20px; }
+    .tabs {
       display: flex;
-      flex-direction: column;
-    }
-
-    .left-pane {
-      border-right: 1px solid rgba(148, 163, 184, 0.25);
-    }
-
-    @media (max-width: 900px) {
-      .left-pane {
-        border-right: none;
-        border-bottom: 1px solid rgba(148, 163, 184, 0.25);
-      }
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 18px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
       gap: 10px;
+      margin-bottom: 20px;
     }
-
-    .brand-logo {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      background: conic-gradient(from 210deg, #38bdf8, #22c55e, #ec4899, #38bdf8);
-      padding: 2px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 24px rgba(56, 189, 248, 0.6);
-    }
-
-    .brand-logo-inner {
-      width: 100%;
-      height: 100%;
-      border-radius: inherit;
-      background: radial-gradient(circle at 30% 20%, #e5e7eb 0, #0f172a 55%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      font-weight: 800;
-    }
-
-    .brand-title { font-size: 18px; font-weight: 700; }
-    .brand-sub { font-size: 11px; color: var(--text-soft); letter-spacing: 0.16em; }
-
-    .pill {
-      padding: 6px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      background: rgba(15, 23, 42, 0.85);
-      font-size: 11px;
-      color: var(--text-soft);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .pill-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: radial-gradient(circle, #4ade80 0, #16a34a 60%);
-      box-shadow: 0 0 12px rgba(74, 222, 128, 0.9);
-    }
-
-    .title-main {
-      font-size: 28px;
-      font-weight: 800;
-      margin-bottom: 6px;
-    }
-
-    .title-main span {
-      background: linear-gradient(120deg, #38bdf8, #22c55e, #ec4899);
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .title-sub {
-      font-size: 13px;
-      color: var(--text-soft);
-      max-width: 420px;
-      line-height: 1.5;
-      margin-bottom: 18px;
-    }
-
-    .drop-zone {
+    .tab {
       flex: 1;
-      border-radius: var(--radius-xl);
-      border: 1px dashed rgba(148, 163, 184, 0.7);
-      background: rgba(15, 23, 42, 0.9);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 26px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .drop-zone.hover {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.4);
-      transform: translateY(-1px);
-    }
-
-    .drop-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 24px;
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 14px;
-    }
-
-    .drop-icon-inner {
-      font-size: 22px;
-      color: var(--accent);
-    }
-
-    .drop-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-    .drop-sub { font-size: 12px; color: var(--text-soft); margin-bottom: 14px; }
-    .drop-sub span { color: var(--accent); }
-
-    .file-input { display: none; }
-
-    /* RIGHT PANEL */
-    .right-pane {
-      background: rgba(15, 23, 42, 0.92);
-    }
-
-    .panel-title {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--text-soft);
-      margin-bottom: 10px;
-    }
-
-    .status-card {
-      border-radius: var(--radius-lg);
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      padding: 16px;
-      margin-bottom: 14px;
-    }
-
-    .status-label { font-size: 12px; color: var(--text-soft); }
-    .status-body { font-size: 12px; color: var(--text-soft); line-height: 1.5; }
-
-    .status-badge {
-      padding: 2px 7px;
-      border-radius: 999px;
-      font-size: 10px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      background: rgba(15, 23, 42, 0.95);
-      color: var(--text-soft);
-    }
-
-    .status-badge.success { border-color: #4ade80; color: #bbf7d0; }
-    .status-badge.error { border-color: #f87171; color: #fecaca; }
-    .status-badge.processing { border-color: #38bdf8; color: #bae6fd; }
-
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .metric-card {
-      border-radius: 14px;
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(148, 163, 184, 0.5);
       padding: 10px;
-      font-size: 11px;
-    }
-
-    .metric-value { font-size: 13px; font-weight: 600; }
-
-    .progress-bar {
-      width: 100%;
-      height: 7px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      overflow: hidden;
-      margin-bottom: 14px;
-    }
-
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #38bdf8, #22c55e, #ec4899);
-      transition: width 0.25s ease-out;
-    }
-
-    .actions-row {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .btn {
-      border-radius: 999px;
-      padding: 9px 14px;
-      font-size: 12px;
+      text-align: center;
+      background: #334155;
+      border-radius: 8px;
       cursor: pointer;
-      border: 1px solid transparent;
-      transition: 0.2s;
     }
-
-    .btn-primary {
-      flex: 1;
-      background: linear-gradient(135deg, #38bdf8, #22c55e);
-      border-color: rgba(56, 189, 248, 0.9);
-      color: #0b1120;
+    .tab.active {
+      background: #38bdf8;
+      color: #0f172a;
+      font-weight: bold;
     }
-
-    .btn-primary.disabled {
-      opacity: 0.5;
-      cursor: default;
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .dropzone {
+      border: 2px dashed #64748b;
+      padding: 20px;
+      text-align: center;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-bottom: 15px;
     }
-
-    .btn-secondary {
-      background: rgba(15, 23, 42, 0.95);
-      border-color: rgba(148, 163, 184, 0.7);
-      color: var(--text-soft);
+    .dropzone:hover { border-color: #38bdf8; }
+    input[type=password], button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
     }
+    input[type=password] {
+      background: #0f172a;
+      color: #e2e8f0;
+      border: 1px solid #475569;
+    }
+    button {
+      background: #38bdf8;
+      color: #0f172a;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover { background: #7dd3fc; }
+    .status { margin-top: 10px; font-size: 0.9rem; }
+    .error { color: #f87171; }
+    .success { color: #4ade80; }
   </style>
 </head>
-
 <body>
-  <div class="app-shell">
-    <!-- LEFT -->
-    <div class="left-pane">
-      <div class="header">
-        <div class="brand">
-          <div class="brand-logo"><div class="brand-logo-inner">A</div></div>
-          <div>
-            <div class="brand-title">AllFile Slimmer</div>
-            <div class="brand-sub">Client-side only</div>
-          </div>
-        </div>
-        <div class="pill"><span class="pill-dot"></span>Compression locale & privée</div>
-      </div>
+  <div class="app">
+    <h1>🔐 Chiffreur / Déchiffreur</h1>
 
-      <div class="title-main">Allège <span>n'importe quel fichier</span> en un geste.</div>
-      <div class="title-sub">
-        Dépose ton fichier, on s'occupe du reste : images optimisées, autres formats recompressés dans un ZIP léger.
-        Tout se passe dans ton navigateur.
-      </div>
-
-      <div id="dropZone" class="drop-zone">
-        <div class="drop-icon"><div class="drop-icon-inner">↓</div></div>
-        <div class="drop-title">Dépose ton fichier ici</div>
-        <div class="drop-sub">ou <span>clique pour parcourir</span></div>
-        <input id="fileInput" class="file-input" type="file" />
-      </div>
+    <div class="tabs">
+      <div class="tab active" data-tab="encrypt">Chiffrer</div>
+      <div class="tab" data-tab="decrypt">Déchiffrer</div>
     </div>
 
-    <!-- RIGHT -->
-    <div class="right-pane">
-      <div class="panel-title">Session de compression</div>
+    <!-- CHIFFRER -->
+    <div class="panel active" id="encryptPanel">
+      <label class="dropzone" id="encryptDrop">
+        <input type="file" id="encryptFile" hidden />
+        Cliquez ou déposez un fichier à chiffrer
+      </label>
 
-      <div class="status-card">
-        <div class="status-label" id="statusLabel">En attente d'un fichier…</div>
-        <div class="status-badge" id="statusBadge">Idle</div>
-        <div class="status-body" id="statusBody">
-          Dépose un fichier pour analyser son type, estimer son poids et préparer la meilleure stratégie de réduction.
-        </div>
-      </div>
+      <input type="password" id="encryptPwd" placeholder="Mot de passe" />
 
-      <div class="metrics-grid">
-        <div class="metric-card">
-          Taille originale
-          <div id="metricOriginal" class="metric-value">—</div>
-        </div>
-        <div class="metric-card">
-          Taille estimée
-          <div id="metricCompressed" class="metric-value">—</div>
-        </div>
-        <div class="metric-card">
-          Gain potentiel
-          <div id="metricGain" class="metric-value">—</div>
-        </div>
-        <div class="metric-card">
-          Type détecté
-          <div id="metricType" class="metric-value">—</div>
-        </div>
-      </div>
+      <button id="encryptBtn">Chiffrer & télécharger</button>
 
-      <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+      <div class="status" id="encryptStatus"></div>
+    </div>
 
-      <div class="actions-row">
-        <button id="btnDownload" class="btn btn-primary disabled" disabled>Télécharger</button>
-        <button id="btnReset" class="btn btn-secondary">Réinitialiser</button>
-      </div>
+    <!-- DÉCHIFFRER -->
+    <div class="panel" id="decryptPanel">
+      <label class="dropzone" id="decryptDrop">
+        <input type="file" id="decryptFile" hidden />
+        Cliquez ou déposez un fichier .encrypted
+      </label>
+
+      <input type="password" id="decryptPwd" placeholder="Mot de passe" />
+
+      <button id="decryptBtn">Déchiffrer & télécharger</button>
+
+      <div class="status" id="decryptStatus"></div>
     </div>
   </div>
 
   <script>
-    const dropZone = document.getElementById("dropZone");
-    const fileInput = document.getElementById("fileInput");
-    const statusLabel = document.getElementById("statusLabel");
-    const statusBody = document.getElementById("statusBody");
-    const statusBadge = document.getElementById("statusBadge");
-    const metricOriginal = document.getElementById("metricOriginal");
-    const metricCompressed = document.getElementById("metricCompressed");
-    const metricGain = document.getElementById("metricGain");
-    const metricType = document.getElementById("metricType");
-    const progressFill = document.getElementById("progressFill");
-    const btnDownload = document.getElementById("btnDownload");
-    const btnReset = document.getElementById("btnReset");
+    // --- UI ---
+    const tabs = document.querySelectorAll(".tab");
+    const panels = document.querySelectorAll(".panel");
 
-    let originalFile = null;
-    let compressedBlob = null;
-    let compressedName = null;
+    tabs.forEach(t => {
+      t.onclick = () => {
+        tabs.forEach(x => x.classList.remove("active"));
+        panels.forEach(p => p.classList.remove("active"));
+        t.classList.add("active");
+        document.getElementById(t.dataset.tab + "Panel").classList.add("active");
+      };
+    });
 
-    function formatBytes(bytes) {
-      const sizes = ["octets", "Ko", "Mo", "Go"];
-      if (bytes === 0) return "0 octet";
-      const i = Math.floor(Math.log(bytes) / Math.log(1024));
-      return (bytes / Math.pow(1024, i)).toFixed(2) + " " + sizes[i];
+    // --- Crypto helpers ---
+    const enc = new TextEncoder();
+    const dec = new TextDecoder();
+
+    async function deriveKey(password, salt) {
+      const keyMaterial = await crypto.subtle.importKey(
+        "raw", enc.encode(password), "PBKDF2", false, ["deriveKey"]
+      );
+      return crypto.subtle.deriveKey(
+        { name: "PBKDF2", salt, iterations: 150000, hash: "SHA-256" },
+        keyMaterial,
+        { name: "AES-GCM", length: 256 },
+        false,
+        ["encrypt", "decrypt"]
+      );
     }
 
-    function setProgress(p) {
-      progressFill.style.width = p + "%";
+    async function encrypt(password, data) {
+      const salt = crypto.getRandomValues(new Uint8Array(16));
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      const key = await deriveKey(password, salt);
+
+      const encrypted = await crypto.subtle.encrypt(
+        { name: "AES-GCM", iv },
+        key,
+        data
+      );
+
+      return new Blob([salt, iv, new Uint8Array(encrypted)]);
     }
 
-    function setStatus(mode, label, body) {
-      statusLabel.textContent = label;
-      statusBody.innerHTML = body;
-      statusBadge.className = "status-badge " + mode;
-      statusBadge.textContent = mode === "processing" ? "En cours" :
-                                mode === "success" ? "Terminé" :
-                                mode === "error" ? "Erreur" : "Idle";
+    async function decrypt(password, blob) {
+      const buf = new Uint8Array(await blob.arrayBuffer());
+      const salt = buf.slice(0, 16);
+      const iv = buf.slice(16, 28);
+      const data = buf.slice(28);
+
+      const key = await deriveKey(password, salt);
+
+      return crypto.subtle.decrypt(
+        { name: "AES-GCM", iv },
+        key,
+        data
+      );
     }
 
-    dropZone.addEventListener("click", () => fileInput.click());
-    dropZone.addEventListener("dragover", e => { e.preventDefault(); dropZone.classList.add("hover"); });
-    dropZone.addEventListener("dragleave", () => dropZone.classList.remove("hover"));
-    dropZone.addEventListener("drop", e => {
+    // --- Chiffrer ---
+    const encryptFile = document.getElementById("encryptFile");
+    const encryptDrop = document.getElementById("encryptDrop");
+    const encryptPwd = document.getElementById("encryptPwd");
+    const encryptBtn = document.getElementById("encryptBtn");
+    const encryptStatus = document.getElementById("encryptStatus");
+    let fileToEncrypt = null;
+
+    encryptDrop.onclick = () => encryptFile.click();
+    encryptDrop.ondrop = e => {
       e.preventDefault();
-      dropZone.classList.remove("hover");
-      if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
-    });
+      fileToEncrypt = e.dataTransfer.files[0];
+      encryptDrop.textContent = fileToEncrypt.name;
+    };
+    encryptDrop.ondragover = e => e.preventDefault();
+    encryptFile.onchange = e => {
+      fileToEncrypt = e.target.files[0];
+      encryptDrop.textContent = fileToEncrypt.name;
+    };
 
-    fileInput.addEventListener("change", e => {
-      if (e.target.files.length) handleFile(e.target.files[0]);
-    });
+    encryptBtn.onclick = async () => {
+      encryptStatus.textContent = "";
+      if (!fileToEncrypt) return encryptStatus.textContent = "Aucun fichier.", encryptStatus.className="status error";
+      if (!encryptPwd.value) return encryptStatus.textContent = "Mot de passe manquant.", encryptStatus.className="status error";
 
-    async function handleFile(file) {
-      originalFile = file;
-      metricOriginal.textContent = formatBytes(file.size);
-      metricType.textContent = file.type || "inconnu";
+      const data = await fileToEncrypt.arrayBuffer();
+      const encryptedBlob = await encrypt(encryptPwd.value, data);
 
-      setStatus("processing", "Analyse du fichier…", "Préparation de la compression.");
-      setProgress(10);
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(encryptedBlob);
+      a.download = fileToEncrypt.name + ".encrypted";
+      a.click();
 
-      if (file.type.startsWith("image/")) {
-        await compressImage(file);
-      } else {
-        await compressGeneric(file);
+      encryptStatus.textContent = "Fichier chiffré.";
+      encryptStatus.className = "status success";
+    };
+
+    // --- Déchiffrer ---
+    const decryptFile = document.getElementById("decryptFile");
+    const decryptDrop = document.getElementById("decryptDrop");
+    const decryptPwd = document.getElementById("decryptPwd");
+    const decryptBtn = document.getElementById("decryptBtn");
+    const decryptStatus = document.getElementById("decryptStatus");
+    let fileToDecrypt = null;
+
+    decryptDrop.onclick = () => decryptFile.click();
+    decryptDrop.ondrop = e => {
+      e.preventDefault();
+      fileToDecrypt = e.dataTransfer.files[0];
+      decryptDrop.textContent = fileToDecrypt.name;
+    };
+    decryptDrop.ondragover = e => e.preventDefault();
+    decryptFile.onchange = e => {
+      fileToDecrypt = e.target.files[0];
+      decryptDrop.textContent = fileToDecrypt.name;
+    };
+
+    decryptBtn.onclick = async () => {
+      decryptStatus.textContent = "";
+      if (!fileToDecrypt) return decryptStatus.textContent = "Aucun fichier.", decryptStatus.className="status error";
+      if (!decryptPwd.value) return decryptStatus.textContent = "Mot de passe manquant.", decryptStatus.className="status error";
+
+      try {
+        const decrypted = await decrypt(decryptPwd.value, fileToDecrypt);
+        const blob = new Blob([decrypted]);
+
+        const originalName = fileToDecrypt.name.replace(/\.encrypted$/, "");
+
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = originalName;
+        a.click();
+
+        decryptStatus.textContent = "Fichier déchiffré.";
+        decryptStatus.className = "status success";
+      } catch {
+        decryptStatus.textContent = "Mot de passe incorrect ou fichier corrompu.";
+        decryptStatus.className = "status error";
       }
-    }
-
+    };
+  </script>
+</body>
+</html>
