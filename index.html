@@ -23,6 +23,7 @@
       animation: gradientMove 20s ease infinite;
       color: #e2e8f0;
       overflow-x: hidden;
+      scroll-behavior: smooth;
     }
 
     @keyframes gradientMove {
@@ -36,8 +37,9 @@
       position: fixed;
       font-size: 2rem;
       opacity: 0.7;
-      animation: flyAround 12s linear infinite;
+      animation: flyAround 14s linear infinite;
       pointer-events: none;
+      z-index: 1;
     }
 
     @keyframes flyAround {
@@ -48,8 +50,8 @@
       100% { transform: translate(0, -240px) rotate(0deg); }
     }
 
-    /* -------------------- HEADER -------------------- */
-    header {
+    /* -------------------- NAVBAR -------------------- */
+    nav {
       position: fixed;
       top: 0;
       width: 100%;
@@ -62,8 +64,20 @@
       justify-content: center;
     }
 
-    header h1 {
-      font-size: 1.8rem;
+    nav ul {
+      display: flex;
+      gap: 25px;
+      list-style: none;
+    }
+
+    nav a {
+      color: #e2e8f0;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
       color: #38bdf8;
       text-shadow: 0 0 10px #38bdf8;
     }
@@ -74,6 +88,8 @@
       margin: 120px auto 60px;
       padding: 20px;
       animation: fadeIn 1.5s ease;
+      position: relative;
+      z-index: 2;
     }
 
     @keyframes fadeIn {
@@ -164,44 +180,32 @@
   <div class="butterfly" style="left: 40%; animation-delay: 2s;">🦋</div>
   <div class="butterfly" style="left: 70%; animation-delay: 4s;">🦋</div>
   <div class="butterfly" style="left: 85%; animation-delay: 6s;">🦋</div>
+  <div class="butterfly" style="left: 20%; animation-delay: 8s;">🦋</div>
 
-  <!-- HEADER -->
-  <header>
-    <h1>AllFileSlimmer – Multitude Entertainment</h1>
-  </header>
+  <!-- NAVBAR -->
+  <nav>
+    <ul>
+      <li><a href="#accueil">Accueil</a></li>
+      <li><a href="#qui">Qui sommes‑nous</a></li>
+      <li><a href="#mode">Mode d’emploi</a></li>
+      <li><a href="#telechargement">Téléchargement</a></li>
+      <li><a href="#liens">Liens externes</a></li>
+    </ul>
+  </nav>
 
   <div class="container">
 
-    <!-- SECTION 1 -->
-    <section>
-      <h2>📦 Qu'est‑ce que AllFileSlimmer ?</h2>
+    <!-- ACCUEIL -->
+    <section id="accueil">
+      <h2>📦 Bienvenue sur AllFileSlimmer</h2>
       <p>
         AllFileSlimmer est un outil développé par <strong>Multitude Entertainment</strong> permettant
         de réduire, optimiser et traiter différents types de fichiers rapidement et simplement.
       </p>
     </section>
 
-    <!-- SECTION 2 -->
-    <section>
-      <h2>📝 Mode d'emploi</h2>
-      <p>
-        1. Téléchargez AllFileSlimmer via le bouton ci‑dessous.<br>
-        2. Ouvrez le programme.<br>
-        3. Sélectionnez un fichier à optimiser.<br>
-        4. Laissez l’outil faire le travail.
-      </p>
-    </section>
-
-    <!-- SECTION 3 -->
-    <section>
-      <h2>⚠️ Limitations actuelles</h2>
-      <p style="color:#fca5a5; font-weight:600;">
-        Les vidéos (MP4, AVI, MOV…) ne sont pas encore prises en charge.
-      </p>
-    </section>
-
-    <!-- SECTION 4 -->
-    <section>
+    <!-- QUI SOMMES NOUS -->
+    <section id="qui">
       <h2>👥 Qui sommes‑nous ?</h2>
       <p>
         <strong>Multitude Entertainment</strong> crée :
@@ -214,16 +218,37 @@
       </ul>
     </section>
 
-    <!-- DOWNLOAD BUTTON -->
-    <a class="btn btn-download"
-       href="https://github.com/MultitudeEntertainment/fichieropti/releases/tag/V1.0">
-      ⬇️ Télécharger AllFileSlimmer (Version 1.0)
-    </a>
+    <!-- MODE D'EMPLOI -->
+    <section id="mode">
+      <h2>📝 Mode d'emploi</h2>
+      <p>
+        1. Téléchargez AllFileSlimmer via le bouton ci‑dessous.<br>
+        2. Ouvrez le programme.<br>
+        3. Sélectionnez un fichier à optimiser.<br>
+        4. Laissez l’outil faire le travail.
+      </p>
 
-    <!-- DISCORD BUTTON -->
-    <a class="btn btn-discord" href="https://discord.gg/zXFuqcJ5">
-      💬 Rejoindre le serveur Discord
-    </a>
+      <p style="color:#fca5a5; font-weight:600; margin-top:15px;">
+        ⚠️ Les vidéos (MP4, AVI, MOV…) ne sont pas encore prises en charge.
+      </p>
+    </section>
+
+    <!-- TELECHARGEMENT -->
+    <section id="telechargement">
+      <h2>⬇️ Télécharger AllFileSlimmer</h2>
+      <a class="btn btn-download"
+         href="https://github.com/MultitudeEntertainment/fichieropti/releases/tag/V1.0">
+        Télécharger AllFileSlimmer (Version 1.0)
+      </a>
+    </section>
+
+    <!-- LIENS EXTERNES -->
+    <section id="liens">
+      <h2>🔗 Liens externes</h2>
+      <a class="btn btn-discord" href="https://discord.gg/zXFuqcJ5">
+        💬 Rejoindre le serveur Discord
+      </a>
+    </section>
 
   </div>
 
