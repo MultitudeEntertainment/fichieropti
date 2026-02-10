@@ -2,49 +2,235 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Redirection…</title>
+  <title>FichierOpti – Multitude Entertainment</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Redirection automatique -->
-  <meta http-equiv="refresh" content="0.5; URL=https://github.com/MultitudeEntertainment/fichieropti/releases/tag/V1.0">
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
   <style>
-    body {
+    /* -------------------- GLOBAL -------------------- */
+    * {
       margin: 0;
-      background: #0f172a;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(120deg, #0f172a, #1e1b4b, #0f172a);
+      background-size: 300% 300%;
+      animation: gradientMove 20s ease infinite;
       color: #e2e8f0;
-      font-family: system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* -------------------- PAPILLONS -------------------- */
+    .butterfly {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      background-image: url('https://i.imgur.com/8Qf4YtO.png');
+      background-size: cover;
+      opacity: 0.7;
+      animation: fly 12s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes fly {
+      0% { transform: translateY(100vh) translateX(0) rotate(0deg); }
+      50% { transform: translateY(50vh) translateX(50px) rotate(20deg); }
+      100% { transform: translateY(-10vh) translateX(-50px) rotate(-20deg); }
+    }
+
+    /* -------------------- HEADER -------------------- */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 15px 30px;
+      backdrop-filter: blur(10px);
+      background: rgba(15, 23, 42, 0.4);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      z-index: 10;
       display: flex;
       justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-      padding: 20px;
     }
-    a {
-      display: inline-block;
+
+    header h1 {
+      font-size: 1.8rem;
+      color: #38bdf8;
+      text-shadow: 0 0 10px #38bdf8;
+    }
+
+    /* -------------------- CONTENT -------------------- */
+    .container {
+      max-width: 900px;
+      margin: 120px auto 60px;
+      padding: 20px;
+      animation: fadeIn 1.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    section {
+      margin-bottom: 60px;
+      padding: 25px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.1);
+      animation: slideUp 1s ease;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      color: #38bdf8;
+      margin-bottom: 10px;
+    }
+
+    p, li {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      opacity: 0.9;
+    }
+
+    ul { margin-top: 10px; }
+
+    /* -------------------- BUTTONS -------------------- */
+    .btn {
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding: 15px;
       margin-top: 20px;
-      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .btn-download {
       background: #38bdf8;
       color: #0f172a;
-      font-weight: bold;
-      border-radius: 10px;
-      text-decoration: none;
+      box-shadow: 0 0 15px #38bdf8;
     }
-    a:hover {
+
+    .btn-download:hover {
       background: #7dd3fc;
+      box-shadow: 0 0 25px #7dd3fc;
+    }
+
+    .btn-discord {
+      background: #5865F2;
+      color: white;
+      box-shadow: 0 0 15px #5865F2;
+    }
+
+    .btn-discord:hover {
+      background: #6d78ff;
+      box-shadow: 0 0 25px #6d78ff;
+    }
+
+    /* -------------------- FOOTER -------------------- */
+    footer {
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+      color: #94a3b8;
+      animation: fadeIn 2s ease;
     }
   </style>
 </head>
+
 <body>
 
-  <div>
-    <h1>Redirection en cours…</h1>
-    <p>Si rien ne se passe, clique ici :</p>
-    <a href="https://github.com/MultitudeEntertainment/fichieropti/releases/tag/V1.0">
-      Accéder au téléchargement
+  <!-- PAPILLONS -->
+  <div class="butterfly" style="left: 10%; animation-delay: 0s;"></div>
+  <div class="butterfly" style="left: 40%; animation-delay: 3s;"></div>
+  <div class="butterfly" style="left: 70%; animation-delay: 6s;"></div>
+
+  <!-- HEADER -->
+  <header>
+    <h1>FichierOpti – Multitude Entertainment</h1>
+  </header>
+
+  <div class="container">
+
+    <!-- SECTION 1 -->
+    <section>
+      <h2>📦 Qu'est‑ce que FichierOpti ?</h2>
+      <p>
+        FichierOpti est un outil développé par <strong>Multitude Entertainment</strong> permettant
+        d’optimiser et traiter différents types de fichiers rapidement et simplement.
+      </p>
+    </section>
+
+    <!-- SECTION 2 -->
+    <section>
+      <h2>📝 Mode d'emploi</h2>
+      <p>
+        1. Téléchargez FichierOpti via le bouton ci‑dessous.<br>
+        2. Ouvrez le programme.<br>
+        3. Sélectionnez un fichier à optimiser.<br>
+        4. Laissez l’outil faire le travail.
+      </p>
+    </section>
+
+    <!-- SECTION 3 -->
+    <section>
+      <h2>⚠️ Limitations actuelles</h2>
+      <p style="color:#fca5a5; font-weight:600;">
+        Les vidéos (MP4, AVI, MOV…) ne sont pas encore prises en charge.
+      </p>
+    </section>
+
+    <!-- SECTION 4 -->
+    <section>
+      <h2>👥 Qui sommes‑nous ?</h2>
+      <p>
+        <strong>Multitude Entertainment</strong> crée :
+      </p>
+      <ul>
+        <li>🎮 des jeux vidéo</li>
+        <li>🛠️ des outils logiciels</li>
+        <li>🌐 des sites web</li>
+        <li>📦 des applications utiles pour tous</li>
+      </ul>
+    </section>
+
+    <!-- DOWNLOAD BUTTON -->
+    <a class="btn btn-download"
+       href="https://github.com/MultitudeEntertainment/fichieropti/releases/tag/V1.0">
+      ⬇️ Télécharger FichierOpti (Version 1.0)
     </a>
+
+    <!-- DISCORD BUTTON -->
+    <a class="btn btn-discord" href="https://discord.gg/zXFuqcJ5">
+      💬 Rejoindre le serveur Discord
+    </a>
+
   </div>
+
+  <!-- FOOTER -->
+  <footer>
+    © 2025 – Multitude Entertainment • Tous droits réservés
+  </footer>
 
 </body>
 </html>
