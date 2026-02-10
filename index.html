@@ -1,260 +1,50 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <title>Chiffreur / Déchiffreur de fichiers</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <title>Redirection…</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Redirection automatique -->
+  <meta http-equiv="refresh" content="0.5; URL=https://github.com/MultitudeEntertainment/fichieropti/releases/tag/V1.0">
+
   <style>
     body {
       margin: 0;
-      font-family: system-ui, sans-serif;
       background: #0f172a;
       color: #e2e8f0;
+      font-family: system-ui, sans-serif;
       display: flex;
       justify-content: center;
-      padding: 20px;
-    }
-    .app {
-      width: 100%;
-      max-width: 700px;
-      background: #1e293b;
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 0 40px rgba(0,0,0,0.4);
-    }
-    h1 { text-align: center; margin-bottom: 20px; }
-    .tabs {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    .tab {
-      flex: 1;
-      padding: 10px;
+      align-items: center;
+      height: 100vh;
       text-align: center;
-      background: #334155;
-      border-radius: 8px;
-      cursor: pointer;
+      padding: 20px;
     }
-    .tab.active {
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 20px;
       background: #38bdf8;
       color: #0f172a;
       font-weight: bold;
+      border-radius: 10px;
+      text-decoration: none;
     }
-    .panel { display: none; }
-    .panel.active { display: block; }
-    .dropzone {
-      border: 2px dashed #64748b;
-      padding: 20px;
-      text-align: center;
-      border-radius: 12px;
-      cursor: pointer;
-      margin-bottom: 15px;
+    a:hover {
+      background: #7dd3fc;
     }
-    .dropzone:hover { border-color: #38bdf8; }
-    input[type=password], button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      border-radius: 8px;
-      border: none;
-      font-size: 1rem;
-    }
-    input[type=password] {
-      background: #0f172a;
-      color: #e2e8f0;
-      border: 1px solid #475569;
-    }
-    button {
-      background: #38bdf8;
-      color: #0f172a;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button:hover { background: #7dd3fc; }
-    .status { margin-top: 10px; font-size: 0.9rem; }
-    .error { color: #f87171; }
-    .success { color: #4ade80; }
   </style>
 </head>
 <body>
-  <div class="app">
-    <h1>🔐 Chiffreur / Déchiffreur</h1>
 
-    <div class="tabs">
-      <div class="tab active" data-tab="encrypt">Chiffrer</div>
-      <div class="tab" data-tab="decrypt">Déchiffrer</div>
-    </div>
-
-    <!-- CHIFFRER -->
-    <div class="panel active" id="encryptPanel">
-      <label class="dropzone" id="encryptDrop">
-        <input type="file" id="encryptFile" hidden />
-        Cliquez ou déposez un fichier à chiffrer
-      </label>
-
-      <input type="password" id="encryptPwd" placeholder="Mot de passe" />
-
-      <button id="encryptBtn">Chiffrer & télécharger</button>
-
-      <div class="status" id="encryptStatus"></div>
-    </div>
-
-    <!-- DÉCHIFFRER -->
-    <div class="panel" id="decryptPanel">
-      <label class="dropzone" id="decryptDrop">
-        <input type="file" id="decryptFile" hidden />
-        Cliquez ou déposez un fichier .encrypted
-      </label>
-
-      <input type="password" id="decryptPwd" placeholder="Mot de passe" />
-
-      <button id="decryptBtn">Déchiffrer & télécharger</button>
-
-      <div class="status" id="decryptStatus"></div>
-    </div>
+  <div>
+    <h1>Redirection en cours…</h1>
+    <p>Si rien ne se passe, clique ici :</p>
+    <a href="https://github.com/MultitudeEntertainment/fichieropti/releases/tag/V1.0">
+      Accéder au téléchargement
+    </a>
   </div>
 
-  <script>
-    // --- UI ---
-    const tabs = document.querySelectorAll(".tab");
-    const panels = document.querySelectorAll(".panel");
-
-    tabs.forEach(t => {
-      t.onclick = () => {
-        tabs.forEach(x => x.classList.remove("active"));
-        panels.forEach(p => p.classList.remove("active"));
-        t.classList.add("active");
-        document.getElementById(t.dataset.tab + "Panel").classList.add("active");
-      };
-    });
-
-    // --- Crypto helpers ---
-    const enc = new TextEncoder();
-    const dec = new TextDecoder();
-
-    async function deriveKey(password, salt) {
-      const keyMaterial = await crypto.subtle.importKey(
-        "raw", enc.encode(password), "PBKDF2", false, ["deriveKey"]
-      );
-      return crypto.subtle.deriveKey(
-        { name: "PBKDF2", salt, iterations: 150000, hash: "SHA-256" },
-        keyMaterial,
-        { name: "AES-GCM", length: 256 },
-        false,
-        ["encrypt", "decrypt"]
-      );
-    }
-
-    async function encrypt(password, data) {
-      const salt = crypto.getRandomValues(new Uint8Array(16));
-      const iv = crypto.getRandomValues(new Uint8Array(12));
-      const key = await deriveKey(password, salt);
-
-      const encrypted = await crypto.subtle.encrypt(
-        { name: "AES-GCM", iv },
-        key,
-        data
-      );
-
-      return new Blob([salt, iv, new Uint8Array(encrypted)]);
-    }
-
-    async function decrypt(password, blob) {
-      const buf = new Uint8Array(await blob.arrayBuffer());
-      const salt = buf.slice(0, 16);
-      const iv = buf.slice(16, 28);
-      const data = buf.slice(28);
-
-      const key = await deriveKey(password, salt);
-
-      return crypto.subtle.decrypt(
-        { name: "AES-GCM", iv },
-        key,
-        data
-      );
-    }
-
-    // --- Chiffrer ---
-    const encryptFile = document.getElementById("encryptFile");
-    const encryptDrop = document.getElementById("encryptDrop");
-    const encryptPwd = document.getElementById("encryptPwd");
-    const encryptBtn = document.getElementById("encryptBtn");
-    const encryptStatus = document.getElementById("encryptStatus");
-    let fileToEncrypt = null;
-
-    encryptDrop.onclick = () => encryptFile.click();
-    encryptDrop.ondrop = e => {
-      e.preventDefault();
-      fileToEncrypt = e.dataTransfer.files[0];
-      encryptDrop.textContent = fileToEncrypt.name;
-    };
-    encryptDrop.ondragover = e => e.preventDefault();
-    encryptFile.onchange = e => {
-      fileToEncrypt = e.target.files[0];
-      encryptDrop.textContent = fileToEncrypt.name;
-    };
-
-    encryptBtn.onclick = async () => {
-      encryptStatus.textContent = "";
-      if (!fileToEncrypt) return encryptStatus.textContent = "Aucun fichier.", encryptStatus.className="status error";
-      if (!encryptPwd.value) return encryptStatus.textContent = "Mot de passe manquant.", encryptStatus.className="status error";
-
-      const data = await fileToEncrypt.arrayBuffer();
-      const encryptedBlob = await encrypt(encryptPwd.value, data);
-
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(encryptedBlob);
-      a.download = fileToEncrypt.name + ".encrypted";
-      a.click();
-
-      encryptStatus.textContent = "Fichier chiffré.";
-      encryptStatus.className = "status success";
-    };
-
-    // --- Déchiffrer ---
-    const decryptFile = document.getElementById("decryptFile");
-    const decryptDrop = document.getElementById("decryptDrop");
-    const decryptPwd = document.getElementById("decryptPwd");
-    const decryptBtn = document.getElementById("decryptBtn");
-    const decryptStatus = document.getElementById("decryptStatus");
-    let fileToDecrypt = null;
-
-    decryptDrop.onclick = () => decryptFile.click();
-    decryptDrop.ondrop = e => {
-      e.preventDefault();
-      fileToDecrypt = e.dataTransfer.files[0];
-      decryptDrop.textContent = fileToDecrypt.name;
-    };
-    decryptDrop.ondragover = e => e.preventDefault();
-    decryptFile.onchange = e => {
-      fileToDecrypt = e.target.files[0];
-      decryptDrop.textContent = fileToDecrypt.name;
-    };
-
-    decryptBtn.onclick = async () => {
-      decryptStatus.textContent = "";
-      if (!fileToDecrypt) return decryptStatus.textContent = "Aucun fichier.", decryptStatus.className="status error";
-      if (!decryptPwd.value) return decryptStatus.textContent = "Mot de passe manquant.", decryptStatus.className="status error";
-
-      try {
-        const decrypted = await decrypt(decryptPwd.value, fileToDecrypt);
-        const blob = new Blob([decrypted]);
-
-        const originalName = fileToDecrypt.name.replace(/\.encrypted$/, "");
-
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(blob);
-        a.download = originalName;
-        a.click();
-
-        decryptStatus.textContent = "Fichier déchiffré.";
-        decryptStatus.className = "status success";
-      } catch {
-        decryptStatus.textContent = "Mot de passe incorrect ou fichier corrompu.";
-        decryptStatus.className = "status error";
-      }
-    };
-  </script>
 </body>
 </html>
