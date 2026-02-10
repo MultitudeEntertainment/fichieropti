@@ -9,7 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
   <style>
-    /* -------------------- GLOBAL -------------------- */
     * {
       margin: 0;
       padding: 0;
@@ -23,7 +22,6 @@
       animation: gradientMove 20s ease infinite;
       color: #e2e8f0;
       overflow-x: hidden;
-      scroll-behavior: smooth;
     }
 
     @keyframes gradientMove {
@@ -32,7 +30,7 @@
       100% { background-position: 0% 50%; }
     }
 
-    /* -------------------- PAPILLONS EMOJI -------------------- */
+    /* Papillons */
     .butterfly {
       position: fixed;
       font-size: 2rem;
@@ -50,14 +48,14 @@
       100% { transform: translate(0, -240px) rotate(0deg); }
     }
 
-    /* -------------------- NAVBAR -------------------- */
+    /* Navbar */
     nav {
       position: fixed;
       top: 0;
       width: 100%;
       padding: 15px 30px;
       backdrop-filter: blur(10px);
-      background: rgba(15, 23, 42, 0.4);
+      background: rgba(15, 23, 42, 0.6);
       border-bottom: 1px solid rgba(255,255,255,0.1);
       z-index: 10;
       display: flex;
@@ -75,41 +73,48 @@
       text-decoration: none;
       font-weight: 500;
       transition: 0.3s;
+      cursor: pointer;
     }
 
-    nav a:hover {
+    nav a.active {
       color: #38bdf8;
       text-shadow: 0 0 10px #38bdf8;
     }
 
-    /* -------------------- CONTENT -------------------- */
+    nav a:hover {
+      color: #7dd3fc;
+    }
+
+    /* Contenu */
     .container {
       max-width: 900px;
       margin: 120px auto 60px;
       padding: 20px;
-      animation: fadeIn 1.5s ease;
       position: relative;
       z-index: 2;
     }
 
+    .page {
+      display: none;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .page.active {
+      display: block;
+    }
+
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(15px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     section {
-      margin-bottom: 60px;
+      margin-bottom: 40px;
       padding: 25px;
       background: rgba(255,255,255,0.05);
       border-radius: 16px;
       backdrop-filter: blur(8px);
       border: 1px solid rgba(255,255,255,0.1);
-      animation: slideUp 1s ease;
-    }
-
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
     }
 
     h2 {
@@ -126,7 +131,6 @@
 
     ul { margin-top: 10px; }
 
-    /* -------------------- BUTTONS -------------------- */
     .btn {
       display: block;
       width: 100%;
@@ -162,100 +166,130 @@
       box-shadow: 0 0 25px #6d78ff;
     }
 
-    /* -------------------- FOOTER -------------------- */
     footer {
       text-align: center;
       padding: 20px;
-      margin-top: 40px;
+      margin-top: 20px;
       color: #94a3b8;
-      animation: fadeIn 2s ease;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- PAPILLONS EMOJI -->
+  <!-- Papillons -->
   <div class="butterfly" style="left: 10%; animation-delay: 0s;">🦋</div>
   <div class="butterfly" style="left: 40%; animation-delay: 2s;">🦋</div>
   <div class="butterfly" style="left: 70%; animation-delay: 4s;">🦋</div>
   <div class="butterfly" style="left: 85%; animation-delay: 6s;">🦋</div>
   <div class="butterfly" style="left: 20%; animation-delay: 8s;">🦋</div>
 
-  <!-- NAVBAR -->
+  <!-- Menu -->
   <nav>
     <ul>
-      <li><a href="#accueil">Accueil</a></li>
-      <li><a href="#qui">Qui sommes‑nous</a></li>
-      <li><a href="#mode">Mode d’emploi</a></li>
-      <li><a href="#telechargement">Téléchargement</a></li>
-      <li><a href="#liens">Liens externes</a></li>
+      <li><a data-page="accueil" class="active">Accueil</a></li>
+      <li><a data-page="qui">Qui sommes‑nous</a></li>
+      <li><a data-page="mode">Mode d’emploi</a></li>
+      <li><a data-page="telechargement">Téléchargement</a></li>
+      <li><a data-page="liens">Liens externes</a></li>
     </ul>
   </nav>
 
   <div class="container">
 
-    <!-- ACCUEIL -->
-    <section id="accueil">
-      <h2>📦 Bienvenue sur AllFileSlimmer</h2>
-      <p>
-        AllFileSlimmer est un outil développé par <strong>Multitude Entertainment</strong> permettant
-        de réduire, optimiser et traiter différents types de fichiers rapidement et simplement.
-      </p>
-    </section>
+    <!-- Page Accueil -->
+    <div class="page active" id="page-accueil">
+      <section>
+        <h2>📦 Bienvenue sur AllFileSlimmer</h2>
+        <p>
+          AllFileSlimmer est un outil développé par <strong>Multitude Entertainment</strong> permettant
+          de réduire, optimiser et traiter différents types de fichiers rapidement et simplement.
+        </p>
+      </section>
+    </div>
 
-    <!-- QUI SOMMES NOUS -->
-    <section id="qui">
-      <h2>👥 Qui sommes‑nous ?</h2>
-      <p>
-        <strong>Multitude Entertainment</strong> crée :
-      </p>
-      <ul>
-        <li>🎮 des jeux vidéo</li>
-        <li>🛠️ des outils logiciels</li>
-        <li>🌐 des sites web</li>
-        <li>📦 des applications utiles pour tous</li>
-      </ul>
-    </section>
+    <!-- Page Qui sommes-nous -->
+    <div class="page" id="page-qui">
+      <section>
+        <h2>👥 Qui sommes‑nous ?</h2>
+        <p>
+          <strong>Multitude Entertainment</strong> crée :
+        </p>
+        <ul>
+          <li>🎮 des jeux vidéo</li>
+          <li>🛠️ des outils logiciels</li>
+          <li>🌐 des sites web</li>
+          <li>📦 des applications utiles pour tous</li>
+        </ul>
+      </section>
+    </div>
 
-    <!-- MODE D'EMPLOI -->
-    <section id="mode">
-      <h2>📝 Mode d'emploi</h2>
-      <p>
-        1. Téléchargez AllFileSlimmer via le bouton ci‑dessous.<br>
-        2. Ouvrez le programme.<br>
-        3. Sélectionnez un fichier à optimiser.<br>
-        4. Laissez l’outil faire le travail.
-      </p>
+    <!-- Page Mode d'emploi -->
+    <div class="page" id="page-mode">
+      <section>
+        <h2>📝 Mode d'emploi</h2>
+        <p>
+          1. Téléchargez AllFileSlimmer via la section “Téléchargement”.<br>
+          2. Ouvrez le programme.<br>
+          3. Sélectionnez un fichier à optimiser.<br>
+          4. Laissez l’outil faire le travail.
+        </p>
+        <p style="color:#fca5a5; font-weight:600; margin-top:15px;">
+          ⚠️ Les vidéos (MP4, AVI, MOV…) ne sont pas encore prises en charge.
+        </p>
+      </section>
+    </div>
 
-      <p style="color:#fca5a5; font-weight:600; margin-top:15px;">
-        ⚠️ Les vidéos (MP4, AVI, MOV…) ne sont pas encore prises en charge.
-      </p>
-    </section>
+    <!-- Page Téléchargement -->
+    <div class="page" id="page-telechargement">
+      <section>
+        <h2>⬇️ Télécharger AllFileSlimmer</h2>
+        <p>
+          Cliquez sur le bouton ci‑dessous pour accéder à la page officielle de téléchargement (GitHub Releases).
+        </p>
+        <a class="btn btn-download"
+           href="https://github.com/MultitudeEntertainment/fichieropti/releases/tag/V1.0">
+          Télécharger AllFileSlimmer (Version 1.0)
+        </a>
+      </section>
+    </div>
 
-    <!-- TELECHARGEMENT -->
-    <section id="telechargement">
-      <h2>⬇️ Télécharger AllFileSlimmer</h2>
-      <a class="btn btn-download"
-         href="https://github.com/MultitudeEntertainment/fichieropti/releases/tag/V1.0">
-        Télécharger AllFileSlimmer (Version 1.0)
-      </a>
-    </section>
+    <!-- Page Liens externes -->
+    <div class="page" id="page-liens">
+      <section>
+        <h2>🔗 Liens externes</h2>
+        <p>Rejoins la communauté Multitude Entertainment :</p>
+        <a class="btn btn-discord" href="https://discord.gg/zXFuqcJ5">
+          💬 Rejoindre le serveur Discord
+        </a>
+      </section>
+    </div>
 
-    <!-- LIENS EXTERNES -->
-    <section id="liens">
-      <h2>🔗 Liens externes</h2>
-      <a class="btn btn-discord" href="https://discord.gg/zXFuqcJ5">
-        💬 Rejoindre le serveur Discord
-      </a>
-    </section>
-
+    <footer>
+      © 2026 – Multitude Entertainment • Tous droits réservés
+    </footer>
   </div>
 
-  <!-- FOOTER -->
-  <footer>
-    © 2026 – Multitude Entertainment • Tous droits réservés
-  </footer>
+  <script>
+    const links = document.querySelectorAll('nav a');
+    const pages = document.querySelectorAll('.page');
+
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        const target = link.getAttribute('data-page');
+
+        // active menu
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+
+        // active page
+        pages.forEach(p => p.classList.remove('active'));
+        document.getElementById('page-' + target).classList.add('active');
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+  </script>
 
 </body>
 </html>
